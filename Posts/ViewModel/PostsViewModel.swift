@@ -16,4 +16,8 @@ protocol PostViewModel {
     func getPostsCount() -> Int
     func toggleFavorite(with index: Int)
     func setVisited(index:Int)
+    func filterOnlyFavoritePosts()
+    func showAllPosts()
+    func deleteAllPosts()
+    func deletePost( at index : Int)
 }

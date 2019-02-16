@@ -112,7 +112,11 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="Posts" id="aU2-sL-1eT">
-                        <barButtonItem key="rightBarButtonItem" image="reload" id="QkV-EA-Q8h"/>
+                        <barButtonItem key="rightBarButtonItem" image="reload" id="QkV-EA-Q8h">
+                            <connections>
+                                <action selector="reloadAllPosts:" destination="BYZ-38-t0r" id="6gv-NB-flU"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="postsTableView" destination="Ucn-t7-yju" id="z6x-SN-lgL"/>

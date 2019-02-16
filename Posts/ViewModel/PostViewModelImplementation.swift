@@ -10,6 +10,7 @@ import Foundation
 
 class PostViewModelImplementation : NSObject, PostViewModel {
     private var posts : [PostModel] = []
+    private var tempPosts : [PostModel] = []
     
     override init() {
         super.init()
@@ -39,5 +40,22 @@ class PostViewModelImplementation : NSObject, PostViewModel {
         posts[index].setVisited()
     }
     
+    func filterOnlyFavoritePosts() {
+        tempPosts = posts
+        posts =  posts.filter { $0.isFavorite == true }
+    }
+    
+    func showAllPosts() {
+        posts = tempPosts
+    }
+    
+    func deleteAllPosts(){
+        posts = []
+        tempPosts = []
+    }
+    
+    func deletePost( at index : Int) {
+        posts.remove(at: index)
+    }
     
 }
