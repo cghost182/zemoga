@@ -21,6 +21,10 @@
 		C3124E4322152D6E003E6BAA /* RequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3124E4222152D6E003E6BAA /* RequestManager.swift */; };
 		C3124E4522166BC8003E6BAA /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3124E4422166BC8003E6BAA /* DetailViewController.swift */; };
 		C3124E4722167AEE003E6BAA /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3124E4622167AEE003E6BAA /* UserModel.swift */; };
+		C3124E492217B730003E6BAA /* PostsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3124E482217B730003E6BAA /* PostsViewModel.swift */; };
+		C3124E4B2217B767003E6BAA /* PostViewModelImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3124E4A2217B767003E6BAA /* PostViewModelImplementation.swift */; };
+		C3124E4D2217D466003E6BAA /* DetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3124E4C2217D466003E6BAA /* DetailsViewModel.swift */; };
+		C3124E4F2217D477003E6BAA /* DetailsViewModelImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3124E4E2217D477003E6BAA /* DetailsViewModelImplementation.swift */; };
 		F33B6A298AAEBC6B6723F68D /* Pods_PostsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 060E28365E5011618D9AA9C0 /* Pods_PostsTests.framework */; };
 		F44A251E85CFA200B28B42E0 /* Pods_Posts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B69F691D467A2A0A1D1674D /* Pods_Posts.framework */; };
 /* End PBXBuildFile section */
@@ -68,6 +72,10 @@
 		C3124E4222152D6E003E6BAA /* RequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestManager.swift; sourceTree = "<group>"; };
 		C3124E4422166BC8003E6BAA /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		C3124E4622167AEE003E6BAA /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		C3124E482217B730003E6BAA /* PostsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewModel.swift; sourceTree = "<group>"; };
+		C3124E4A2217B767003E6BAA /* PostViewModelImplementation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModelImplementation.swift; sourceTree = "<group>"; };
+		C3124E4C2217D466003E6BAA /* DetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewModel.swift; sourceTree = "<group>"; };
+		C3124E4E2217D477003E6BAA /* DetailsViewModelImplementation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewModelImplementation.swift; sourceTree = "<group>"; };
 		E9586C91B7381183F8146EBE /* Pods-PostsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PostsTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PostsTests/Pods-PostsTests.release.xcconfig"; sourceTree = "<group>"; };
 		EA7E7DB88A4052AD5D197851 /* Pods-Posts.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Posts.release.xcconfig"; path = "Pods/Target Support Files/Pods-Posts/Pods-Posts.release.xcconfig"; sourceTree = "<group>"; };
 		FF101DE0827D4E0155C1A4D0 /* Pods-Posts.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Posts.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Posts/Pods-Posts.debug.xcconfig"; sourceTree = "<group>"; };
@@ -204,6 +212,10 @@
 		C3124E3722150F36003E6BAA /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				C3124E482217B730003E6BAA /* PostsViewModel.swift */,
+				C3124E4A2217B767003E6BAA /* PostViewModelImplementation.swift */,
+				C3124E4C2217D466003E6BAA /* DetailsViewModel.swift */,
+				C3124E4E2217D477003E6BAA /* DetailsViewModelImplementation.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -454,9 +466,13 @@
 				C3124E4722167AEE003E6BAA /* UserModel.swift in Sources */,
 				C3124E0722150174003E6BAA /* ViewController.swift in Sources */,
 				C3124E4322152D6E003E6BAA /* RequestManager.swift in Sources */,
+				C3124E492217B730003E6BAA /* PostsViewModel.swift in Sources */,
 				C3124E3E221519F0003E6BAA /* PostCell.swift in Sources */,
+				C3124E4D2217D466003E6BAA /* DetailsViewModel.swift in Sources */,
 				C3124E0522150174003E6BAA /* AppDelegate.swift in Sources */,
+				C3124E4B2217B767003E6BAA /* PostViewModelImplementation.swift in Sources */,
 				C3124E4522166BC8003E6BAA /* DetailViewController.swift in Sources */,
+				C3124E4F2217D477003E6BAA /* DetailsViewModelImplementation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

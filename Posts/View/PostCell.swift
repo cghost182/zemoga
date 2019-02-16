@@ -57,16 +57,6 @@ class PostCell: SwipeTableViewCell {
     internal func getPostFavorite() -> Bool{
         return self.isFavorite
     }
-    
-//    internal func changeFavorite (){
-//        self.isFavorite = !self.isFavorite
-//
-//        if self.isFavorite {
-//            self.cellIcon.image = UIImage(named: "star-full")
-//            self.cellIcon.alpha = 1.0
-//        }else{
-//            self.cellIcon.alpha = 0.0
-//        }
-//    }
+
     
 }

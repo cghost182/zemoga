@@ -9,7 +9,7 @@
 import UIKit
 
 protocol updatePostDelegate {
-    func setFavorite()
+    func toggleFavorite()
 }
 
 class DetailViewController: UIViewController {
@@ -21,52 +21,52 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var lbl_userWebsite: UILabel!
     @IBOutlet weak var btn_favorite: UIBarButtonItem!
     
-    private var userId : Int?
-    private var postDescription : String?
-    private var userName : String?
-    private var userEmail : String?
-    private var userPhone : String?
-    private var userWebsite : String?
-    private var isFavorite : Bool = false
+    var viewModel : DetailsViewModel?
     var delegate : updatePostDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.lbl_postDescription.text = ""
-        self.lbl_userName.text = ""
-        self.lbl_userEmail.text = ""
-        self.lbl_userPhone.text = ""
-        self.lbl_userWebsite.text = ""
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        let requestManager = RequestManager(userDelegate: self)
-        requestManager.requestUser(userId: self.userId!)
         
-        if isFavorite {
+        guard let viewModel = viewModel else{
+            return
+        }
+        
+        //You can test with network conditioner in very bad network to see this 'Loading...' texts working
+        self.lbl_postDescription.text = "Loading..."
+        self.lbl_userName.text = "Loading..."
+        self.lbl_userEmail.text = "Loading..."
+        self.lbl_userPhone.text = "Loading..."
+        self.lbl_userWebsite.text = "Loading..."
+        
+        let requestManager = RequestManager(userDelegate: self)
+        requestManager.requestUser(userId: viewModel.userId)
+        
+        if viewModel.postIsFavorite {
             self.btn_favorite.image = UIImage(named: "star-full")
         } else {
             self.btn_favorite.image = UIImage(named: "star")
         }
     }
-    
-    internal func configureView (postBody : String , userId : Int, isFavorite : Bool){
-        self.postDescription = postBody
-        self.userId = userId
-        self.isFavorite = isFavorite
-    }
+
     
     @IBAction func setFavorite(_ sender: Any) {
-        self.isFavorite = !self.isFavorite
         
-        if isFavorite {
+        guard let viewModel = viewModel else{
+            return
+        }
+        
+        viewModel.toggleFavorite()
+        
+        if viewModel.postIsFavorite {
             self.btn_favorite.image = UIImage(named: "star-full")
         } else {
             self.btn_favorite.image = UIImage(named: "star")
         }
         
-        delegate?.setFavorite()
+        delegate?.toggleFavorite()
     }
     
 }
@@ -74,10 +74,19 @@ class DetailViewController: UIViewController {
 extension DetailViewController: UserRequestManagerDelegate {
     
     func getUserRequestDidComplete(_ user: UserModel) {
-        self.lbl_postDescription.text = self.postDescription
-        self.lbl_userName.text = user.name
-        self.lbl_userEmail.text = user.email
-        self.lbl_userPhone.text = user.phone
-        self.lbl_userWebsite.text = user.website
+        guard let viewModel = viewModel else{
+            return
+        }
+        
+        viewModel.setUser(user: user)
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.lbl_postDescription.text = viewModel.postBody
+            self?.lbl_userName.text = viewModel.getUserName()
+            self?.lbl_userEmail.text = viewModel.getUserEmail()
+            self?.lbl_userPhone.text = viewModel.getUserPhone()
+            self?.lbl_userWebsite.text = viewModel.getUSerWebsite()
+        }
+        
     }
 }

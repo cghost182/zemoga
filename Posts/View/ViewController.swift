@@ -9,11 +9,11 @@
 import UIKit
 import SwipeCellKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController {
   
-    var posts : [PostModel] = []
     var currentIndex : Int = 0
     var defaultOptions = SwipeOptions()
+    var postsViewModel: PostViewModel = PostViewModelImplementation()
 
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var postsTableView: UITableView!
@@ -28,7 +28,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let requestManager = RequestManager(delegate: self)
         requestManager.requestPosts()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        postsTableView.reloadData()
+    }
 
+    // Action for segmentedControl
     @IBAction func indexChanged(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex
         {
@@ -44,43 +49,51 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBAction func deleteAllAction(_ sender: Any) {
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return posts.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PostCellID") as! PostCell
-        cell.delegate = self 
-        cell.configureCell(with: posts[indexPath.row], index: indexPath.row)
-        
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        currentIndex = indexPath.row
-        posts[currentIndex].setVisited()
-        postsTableView.reloadData()
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
         if segue.destination is DetailViewController
         {
             let currentPost = sender as! PostCell
-            let vc = segue.destination as? DetailViewController
-            vc?.delegate = self
-            
-            vc?.configureView(postBody: currentPost.getPostDetail(), userId: currentPost.getUserId(), isFavorite: currentPost.getPostFavorite())
+            let detailVC = segue.destination as? DetailViewController
+            detailVC?.viewModel = DetailsViewModelImplementation()
+            detailVC?.viewModel?.postBody = currentPost.getPostDetail()
+            detailVC?.viewModel?.postIsFavorite = currentPost.getPostFavorite()
+            detailVC?.viewModel?.userId = currentPost.getUserId()
+            detailVC?.delegate = self
         }
     }
     
 }
 
-// MARK: - Request Manager Delegate
+
+
+// MARK: - Extensions
+
+extension ViewController : UITableViewDelegate{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return postsViewModel.getPostsCount()
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PostCellID") as! PostCell
+        cell.delegate = self
+        cell.configureCell(with: postsViewModel.getPost(index:indexPath.row), index: indexPath.row)
+        
+        return cell
+    }
+}
+
+extension ViewController:UITableViewDataSource{
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        currentIndex = indexPath.row
+        postsViewModel.setVisited(index : currentIndex)
+        postsTableView.reloadData()
+    }
+}
 
 extension ViewController: RequestManagerDelegate {
     func getPostsRequestDidComplete(_ responsePosts: [PostModel]) {
-        posts = responsePosts
+        postsViewModel.setPosts(posts: responsePosts)
         DispatchQueue.main.async { [weak self] in
             self?.postsTableView.reloadData()
         }
@@ -89,17 +102,15 @@ extension ViewController: RequestManagerDelegate {
 }
 
 extension ViewController: updatePostDelegate {
-    func setFavorite() {
-        posts[currentIndex].setFavorite()
-        DispatchQueue.main.async { [weak self] in
-            self?.postsTableView.reloadData()
-        }
+    func toggleFavorite() {
+        postsViewModel.toggleFavorite(with:currentIndex)
     }
+    
 }
 
 extension ViewController: SwipeTableViewCellDelegate {
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        let post = posts[indexPath.row]
+        let post = postsViewModel.getPost(index: indexPath.row)
         
 //        if orientation == .left {
 //            guard isSwipeRightEnabled else { return nil }

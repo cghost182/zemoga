@@ -8,6 +8,11 @@
 
 import Foundation
 
+
+enum PostsNotifications {
+    static let PostsDidChangeNotification = "PostsDidChangeNotification"
+}
+
 class PostModel {
     let userId : Int
     let postId: Int
@@ -30,8 +35,9 @@ class PostModel {
         self.visited = true
     }
     
-    internal func setFavorite (){
+    internal func toggleFavorite (){
         self.isFavorite = !self.isFavorite
     }
+    
     
 }
