@@ -8,7 +8,7 @@
 
 import Foundation
 
-class UserModel {
+class UserModel : NSObject{
     let userId: Int
     let name: String
     let email: String
@@ -22,6 +22,5 @@ class UserModel {
         self.phone = phone
         self.website = website
     }
- 
-    
+
 }

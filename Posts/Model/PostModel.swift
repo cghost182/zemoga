@@ -13,7 +13,7 @@ enum PostsNotifications {
     static let PostsDidChangeNotification = "PostsDidChangeNotification"
 }
 
-class PostModel {
+class PostModel : NSObject{
     let userId : Int
     let postId: Int
     let title: String

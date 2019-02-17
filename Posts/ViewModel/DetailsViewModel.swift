@@ -12,6 +12,7 @@ protocol DetailsViewModel {
     var postBody : String {get set}
     var postIsFavorite : Bool {get set}
     var userId : Int {get set}
+    var postId : Int {get set}
     
     func setUser(user:UserModel)
     func getUserName() -> String

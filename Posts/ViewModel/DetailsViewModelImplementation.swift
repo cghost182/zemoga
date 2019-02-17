@@ -9,7 +9,7 @@
 import Foundation
 
 class DetailsViewModelImplementation : NSObject, DetailsViewModel {
-    
+    var postId: Int = 0
     var postBody : String = ""
     var postIsFavorite : Bool = false
     var userId : Int = 0

@@ -13,12 +13,14 @@ protocol RequestManagerDelegate {
 }
 protocol UserRequestManagerDelegate {
     func getUserRequestDidComplete(_ user:UserModel)
+    func getPostCommentsDidComplete(_ comments:[CommentsModel])
 }
 
 class RequestManager: NSObject {
     
     let postsEndpoint = "https://jsonplaceholder.typicode.com/posts"
     let userEndpoint = "https://jsonplaceholder.typicode.com/users"
+    let postCommentsEndpoint = "https://jsonplaceholder.typicode.com/comments?postId="
     
     var delegate: RequestManagerDelegate?
     var userDelegate : UserRequestManagerDelegate?
@@ -35,14 +37,11 @@ class RequestManager: NSObject {
             guard error == nil else {
                 return
             }
-            
             guard let data = data else {
                 return
             }
-            
             self.delegate?.getPostsRequestDidComplete(self.parsePostsRequest(data))
         }
-        
         task.resume()
     }
     
@@ -52,14 +51,25 @@ class RequestManager: NSObject {
             guard error == nil else {
                 return
             }
-            
             guard let data = data else {
                 return
             }
-            
             self.userDelegate?.getUserRequestDidComplete(self.parseUserRequest(data))
         }
+        task.resume()
+    }
+    
+    func requestPostComments(postId : Int) {
         
+        let task = URLSession.shared.dataTask(with: performRequest(with: URL(string: "\(postCommentsEndpoint)\(postId)")!)) { data, response, error in
+            guard error == nil else {
+                return
+            }
+            guard let data = data else {
+                return
+            }
+            self.userDelegate?.getPostCommentsDidComplete(self.parseCommentsRequest(data))
+        }
         task.resume()
     }
     
@@ -94,12 +104,15 @@ class RequestManager: NSObject {
                 continue
             }
             
-            //TODO use codable
-            postsArray.append(PostModel(userId: post["userId"] as! Int, postId: post["id"] as! Int, title: post["title"] as! String, body: post["body"] as! String))
+            postsArray.append(PostModel(userId: post["userId"] as! Int,
+                                        postId: post["id"] as! Int,
+                                        title: post["title"] as! String,
+                                        body: post["body"] as! String))
         }
         
         return postsArray
     }
+
     
     //MARK: - Parsing user
     fileprivate func parseUserRequest(_ data: Data) -> UserModel {
@@ -115,6 +128,7 @@ class RequestManager: NSObject {
             return UserModel(userId: 0, name: "", email: "", phone: "", website: "")
         }
     }
+
     
     fileprivate func parseUser(from userResponse: Any) -> UserModel {
         
@@ -122,8 +136,43 @@ class RequestManager: NSObject {
             return  UserModel(userId: 0, name: "", email: "", phone: "", website: "")
         }
         
-        //TODO use codable
         return UserModel(userId: _user["id"] as! Int, name: _user["name"] as! String, email: _user["email"] as! String, phone: _user["phone"] as! String, website: _user["website"] as! String)
+    }
+    
+    
+    
+    //MARK: - Parsing comments
+    fileprivate func parseCommentsRequest(_ data: Data) -> [CommentsModel] {
+        do {
+            let jsonResponse = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers)
+            
+            guard let arrayResponse = jsonResponse as? [Any] else {
+                return []
+            }
+            
+            return self.parseComments(from: arrayResponse)
+        } catch {
+            return []
+        }
+    }
+
+    
+    fileprivate func parseComments(from arrayResponse: [Any]) -> [CommentsModel] {
+        
+        var postsCommentsArray: [CommentsModel] = []
+        
+        for postResponse in arrayResponse {
+            guard let comment = postResponse as? [String : Any] else {
+                continue
+            }
+            
+            postsCommentsArray.append(CommentsModel(postId: comment["postId"] as! Int,
+                                                    id: comment["id"] as! Int,
+                                                    name: comment["name"] as! String,
+                                                    email: comment["email"] as! String,
+                                                    body: comment["body"] as! String))
+        }
+        return postsCommentsArray
     }
 }
 

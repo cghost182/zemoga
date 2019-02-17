@@ -19,9 +19,13 @@ class PostsTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testPostsModel() {
+        let post = PostsMocks.post1
+        XCTAssertNotNil(post)
+        XCTAssertEqual(post.userId, 1)
+        XCTAssertEqual(post.postId, 1)
+        XCTAssertEqual(post.title, "sunt aut facere repellat provident occaecati excepturi optio reprehenderit")
+        XCTAssertEqual(post.body, "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto")
     }
 
     func testPerformanceExample() {

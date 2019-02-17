@@ -19,6 +19,7 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var postsTableView: UITableView!
+    @IBOutlet weak var btn_delete: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,25 +42,44 @@ class ViewController: UIViewController {
 
     // Action for segmentedControl
     @IBAction func indexChanged(_ sender: UISegmentedControl) {
+        var animateOption : UIView.AnimationOptions?
+        
         switch sender.selectedSegmentIndex
         {
         case 0:
             postsViewModel.showAllPosts()
+            animateOption = .transitionFlipFromLeft
         case 1:
             postsViewModel.filterOnlyFavoritePosts()
+            animateOption = .transitionFlipFromRight
         default:
             break
         }
-        postsTableView.reloadData()
+        
+        UIView.transition(with: postsTableView, duration: 1.0, options: animateOption!, animations: { [weak self] in
+            self!.postsTableView.reloadData()
+            }, completion: nil
+        )
+        
     }
     
     @IBAction func deleteAllAction(_ sender: Any) {
         postsViewModel.deleteAllPosts()
+        
+        UIView.animate(withDuration: 0.5, delay: 0, options: .transitionFlipFromTop, animations: {
+            self.btn_delete.frame = CGRect(x: self.btn_delete.frame.origin.x, y: self.btn_delete.frame.origin.y, width: self.btn_delete.frame.width, height: 0)
+        }, completion: nil)
+        
         postsTableView.reloadData()
     }
     
     @IBAction func reloadAllPosts(_ sender: Any) {
         segmentedControl.selectedSegmentIndex = 0
+        
+        UIView.animate(withDuration: 0.5, delay: 0, options: .transitionFlipFromBottom, animations: {
+            self.btn_delete.frame = CGRect(x: self.btn_delete.frame.origin.x, y: self.btn_delete.frame.origin.y, width: self.btn_delete.frame.width, height: 34)
+        }, completion: nil)
+        
         loadPosts()
     }
     
@@ -73,6 +93,7 @@ class ViewController: UIViewController {
             detailVC?.viewModel?.postBody = currentPost.getPostDetail()
             detailVC?.viewModel?.postIsFavorite = currentPost.getPostFavorite()
             detailVC?.viewModel?.userId = currentPost.getUserId()
+            detailVC?.viewModel?.postId = currentPost.getPostId()
             detailVC?.delegate = self
         }
     }
@@ -130,12 +151,9 @@ extension ViewController: SwipeTableViewCellDelegate {
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
             // handle action by updating model with deletion
             self.postsViewModel.deletePost(at: indexPath.row)
-            //self.postsTableView.reloadData()
         }
         configure(action: deleteAction, with: .trash)
         
-        // customize the action appearance
-       // deleteAction.image = UIImage(named: "Trash-circle")
         
         return [deleteAction]
     }

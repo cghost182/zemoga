@@ -119,6 +119,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="btn_delete" destination="gxi-wX-1d5" id="agx-fm-IGf"/>
                         <outlet property="postsTableView" destination="Ucn-t7-yju" id="z6x-SN-lgL"/>
                         <outlet property="segmentedControl" destination="4IS-g1-0CW" id="Yf6-hE-KNK"/>
                     </connections>
@@ -270,6 +271,37 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gam-bG-2fz">
                                 <rect key="frame" x="5" y="417" width="365" height="250"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommetCellID" id="uk7-nW-5nd" customClass="CommentCell" customModule="Posts" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="365" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="uk7-nW-5nd" id="5l7-6a-rzz">
+                                            <rect key="frame" x="0.0" y="0.0" width="365" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hqO-PB-oL7">
+                                                    <rect key="frame" x="0.0" y="0.0" width="365" height="43.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.25143073319999998" green="0.32279251190000002" blue="0.40542532930000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="hqO-PB-oL7" firstAttribute="leading" secondItem="5l7-6a-rzz" secondAttribute="leading" id="2ni-mM-YEc"/>
+                                                <constraint firstItem="hqO-PB-oL7" firstAttribute="top" secondItem="5l7-6a-rzz" secondAttribute="top" id="EK3-ya-8ft"/>
+                                                <constraint firstAttribute="bottom" secondItem="hqO-PB-oL7" secondAttribute="bottom" id="QGv-uW-X75"/>
+                                                <constraint firstAttribute="trailing" secondItem="hqO-PB-oL7" secondAttribute="trailing" id="bTN-QE-J5F"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="lbl_comment" destination="hqO-PB-oL7" id="mt7-ys-zmi"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="nTD-4X-QS4" id="V2p-b9-s0P"/>
+                                    <outlet property="delegate" destination="nTD-4X-QS4" id="AtT-vT-GZL"/>
+                                </connections>
                             </tableView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="aiH-kO-nx2">
                                 <rect key="frame" x="5" y="266" width="365" height="20"/>
@@ -343,6 +375,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="btn_favorite" destination="HJE-ZY-yTg" id="zP8-Yg-lT3"/>
+                        <outlet property="commentsTable" destination="gam-bG-2fz" id="tIm-tB-ZBd"/>
                         <outlet property="lbl_postDescription" destination="Rq0-dm-NM0" id="iE6-h4-1Pk"/>
                         <outlet property="lbl_userEmail" destination="PsK-AF-KZB" id="ybs-60-jw3"/>
                         <outlet property="lbl_userName" destination="HTV-7T-6kE" id="hOI-nr-1zm"/>
